@@ -180,6 +180,14 @@ export default function ProposalSection() {
   const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 });
   const [noTextIndex, setNoTextIndex] = useState(0);
   const [yesScale, setYesScale] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const noPhrases = [
     'Need more time',
@@ -194,14 +202,14 @@ export default function ProposalSection() {
 
   const handleNoInteraction = () => {
     // Keep runaway inside reasonable bounds so it doesn't leave the screen or card
-    const maxOffsetWidth = 280;
-    const maxOffsetHeight = 120;
+    const maxOffsetWidth = isMobile ? 100 : 280;
+    const maxOffsetHeight = isMobile ? 70 : 120;
     const newX = (Math.random() - 0.5) * maxOffsetWidth;
     const newY = (Math.random() - 0.5) * maxOffsetHeight;
     
     setNoButtonPos({ x: newX, y: newY });
     setNoTextIndex((prev) => (prev + 1) % noPhrases.length);
-    setYesScale((prev) => Math.min(prev + 0.2, 2.5));
+    setYesScale((prev) => Math.min(prev + 0.15, 2.0));
   };
 
   const handleYes = () => {
@@ -351,7 +359,7 @@ export default function ProposalSection() {
         {/* Proposal Letter Container */}
         <div
           ref={contentRef}
-          className="relative rounded-3xl p-8 md:p-12 lg:p-16 text-center"
+          className="relative rounded-3xl p-5 sm:p-12 lg:p-16 text-center"
           style={{
             background: 'linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(255,240,246,0.98) 100%)',
             boxShadow: '0 0 60px rgba(255, 105, 180, 0.25), 0 8px 32px rgba(255, 23, 88, 0.15)',
@@ -391,39 +399,39 @@ export default function ProposalSection() {
 
           {/* Letter content */}
           <div className="space-y-5">
-            <p className="proposal-line font-script text-[26px] md:text-[30px] text-romanticRed/90 leading-relaxed">
+            <p className="proposal-line font-script text-[22px] xs:text-[26px] md:text-[30px] text-romanticRed/90 leading-relaxed">
               My Dearest Love,
             </p>
 
-            <p className="proposal-line text-[15px] md:text-[17px] font-body text-textDark/85 leading-[1.9] tracking-wide">
+            <p className="proposal-line text-[14px] xs:text-[15px] md:text-[17px] font-body text-textDark/85 leading-[1.8] sm:leading-[1.9] tracking-wide text-left sm:text-center">
               From the very first moment our paths crossed, I knew something extraordinary was beginning. You walked into my life like the most beautiful sunrise, painting my world in colors I never knew existed. Every laugh shared, every silent moment endured together, every inside joke that only we understand has woven us into something unbreakable.
             </p>
 
-            <p className="proposal-line text-[15px] md:text-[17px] font-body text-textDark/85 leading-[1.9] tracking-wide">
+            <p className="proposal-line text-[14px] xs:text-[15px] md:text-[17px] font-body text-textDark/85 leading-[1.8] sm:leading-[1.9] tracking-wide text-left sm:text-center">
               You are not just someone I love; you are my favorite place to be. You are the hand I want to hold on every journey, the voice I want to hear at the end of every day, and the smile I want to wake up to for the rest of my life. You make my ordinary days feel like poetry, and my special days feel like magic.
             </p>
 
-            <p className="proposal-line text-[15px] md:text-[17px] font-body text-textDark/85 leading-[1.9] tracking-wide">
+            <p className="proposal-line text-[14px] xs:text-[15px] md:text-[17px] font-body text-textDark/85 leading-[1.8] sm:leading-[1.9] tracking-wide text-left sm:text-center">
               I have thought about this a million times, and each time the answer becomes clearer: I want to build a lifetime of memories with you. I want to be there for every sunrise and every sunset, every laugh and every tear, every dream and every reality. I want to grow old with you, learning new reasons to love you every single day.
             </p>
 
-            <p className="proposal-line text-[15px] md:text-[17px] font-body text-textDark/85 leading-[1.9] tracking-wide">
+            <p className="proposal-line text-[14px] xs:text-[15px] md:text-[17px] font-body text-textDark/85 leading-[1.8] sm:leading-[1.9] tracking-wide text-left sm:text-center">
               So here, in front of the world and with all my heart, I ask you: Will you be mine forever? Will you let me love you, protect you, and cherish you for every tomorrow that we are blessed to share?
             </p>
 
             {/* The Big Question */}
-            <div className="proposal-line py-8">
-              <div className="inline-block relative">
-                <p className="font-script text-[36px] md:text-[48px] lg:text-[56px] text-romanticRed leading-none">
+            <div className="proposal-line py-6 sm:py-8">
+              <div className="inline-block relative px-4">
+                <p className="font-script text-[28px] xs:text-[32px] sm:text-[48px] lg:text-[56px] text-romanticRed leading-tight">
                   Will you be mine forever?
                 </p>
                 {/* Decorative hearts around the question */}
-                <div className="absolute -left-8 top-1/2 -translate-y-1/2 text-rosePink/40 animate-pulse">
+                <div className="absolute -left-3 xs:-left-8 top-1/2 -translate-y-1/2 text-rosePink/40 animate-pulse hidden xs:block">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                   </svg>
                 </div>
-                <div className="absolute -right-8 top-1/2 -translate-y-1/2 text-rosePink/40 animate-pulse" style={{ animationDelay: '0.5s' }}>
+                <div className="absolute -right-3 xs:-right-8 top-1/2 -translate-y-1/2 text-rosePink/40 animate-pulse hidden xs:block" style={{ animationDelay: '0.5s' }}>
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                   </svg>
@@ -432,10 +440,10 @@ export default function ProposalSection() {
             </div>
 
             {/* Yes/No buttons */}
-            <div className="proposal-line relative min-h-[80px] flex items-center justify-center gap-6 pt-2">
+            <div className="proposal-line relative min-h-[80px] flex items-center justify-center gap-4 sm:gap-6 pt-2">
               <button
-                className="px-10 py-3.5 rounded-full font-body font-semibold text-[16px] text-white
-                           transition-all duration-300 active:scale-95 shadow-lg relative z-20 cursor-pointer"
+                className="px-4 py-2.5 sm:px-10 sm:py-3.5 rounded-full font-body font-semibold text-[13px] xs:text-[14px] sm:text-[16px] text-white
+                           transition-all duration-300 active:scale-95 shadow-lg relative z-20 cursor-pointer w-[48%] sm:w-auto"
                 style={{
                   background: 'linear-gradient(135deg, #FF1493, #FF6692, #FFAEC9)',
                   boxShadow: '0 4px 24px rgba(255, 20, 147, 0.4)',
@@ -447,8 +455,8 @@ export default function ProposalSection() {
               </button>
               
               <button
-                className="px-10 py-3.5 rounded-full font-body font-semibold text-[16px]
-                           border-2 transition-all duration-200 active:scale-95 z-10
+                className="px-4 py-2.5 sm:px-10 sm:py-3.5 rounded-full font-body font-semibold text-[13px] xs:text-[14px] sm:text-[16px]
+                           border-2 transition-all duration-200 active:scale-95 z-10 w-[48%] sm:w-auto
                            text-romanticRed border-romanticRed/40 hover:border-romanticRed
                            hover:bg-romanticRed/5 select-none touch-none"
                 style={{
@@ -481,7 +489,7 @@ export default function ProposalSection() {
       {showSuccessModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 transition-all duration-500 animate-fadeIn">
           <div
-            className="relative max-w-[550px] w-full bg-white rounded-3xl p-8 md:p-12 text-center overflow-hidden"
+            className="relative max-w-[550px] w-full bg-white rounded-3xl p-5 xs:p-8 md:p-12 text-center overflow-hidden"
             style={{
               boxShadow: '0 0 80px rgba(255, 20, 147, 0.4), 0 10px 40px rgba(0, 0, 0, 0.2)',
               border: '2px solid #FF6692',
@@ -514,7 +522,7 @@ export default function ProposalSection() {
               <div className="absolute -inset-2 rounded-full border border-pink-300/40 animate-ping" />
             </div>
 
-            <h3 className="font-display text-[32px] md:text-[40px] font-semibold text-romanticRed mb-4">
+            <h3 className="font-display text-[26px] xs:text-[32px] md:text-[40px] font-semibold text-romanticRed mb-4">
               She Said YES! 💖
             </h3>
 

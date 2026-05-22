@@ -110,7 +110,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
       {/* Name display */}
       <h1
-        className="font-script text-[72px] md:text-[96px] text-textDark relative z-10 glow-text-pink animate-float"
+        className="font-script text-[50px] xs:text-[60px] md:text-[96px] text-textDark relative z-10 glow-text-pink animate-float"
         style={{ animationDuration: '5s' }}
       >
         My Love

@@ -51,6 +51,15 @@ export default function HeroSection() {
   const ctaRef = useRef<HTMLButtonElement>(null);
   const photoRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect screen size for responsive collage layout
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Image preload
   useEffect(() => {
@@ -96,12 +105,12 @@ export default function HeroSection() {
         { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 1.2 }
       );
 
-      // Photo parallax on scroll
+      // Photo parallax on scroll (only if not mobile or with scaled speed)
       photoRefs.current.forEach((photo, i) => {
         if (!photo) return;
         const speed = photos[i].speed;
         gsap.to(photo, {
-          y: () => -150 * speed,
+          y: () => -120 * speed,
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -153,40 +162,58 @@ export default function HeroSection() {
 
       {/* Floating photo collage */}
       <div className="absolute inset-0 pointer-events-none">
-        {photos.map((photo, i) => (
-          <div
-            key={i}
-            ref={el => { photoRefs.current[i] = el; }}
-            className="absolute cursor-pointer pointer-events-auto group"
-            style={{
-              left: photo.x,
-              top: photo.y,
-              width: photo.size,
-              zIndex: photo.zIndex,
-              transform: `rotate(${photo.rotation}deg)`,
-              animation: `float ${photo.floatDuration}s ease-in-out infinite`,
-              animationDelay: `${photo.floatDelay}s`,
-            }}
-          >
+        {photos.map((photo, i) => {
+          // Responsive sizes and offsets on mobile
+          const size = isMobile ? photo.size * 0.45 : photo.size;
+          let left = photo.x;
+          let top = photo.y;
+          let display = 'block';
+
+          if (isMobile) {
+            // Keep only 4 photos on mobile and place them neatly at the corners
+            if (i === 0) { left = '2%'; top = '15%'; }
+            else if (i === 1) { left = '72%'; top = '8%'; }
+            else if (i === 2) { left = '2%'; top = '58%'; }
+            else if (i === 3) { left = '70%'; top = '52%'; }
+            else { display = 'none'; }
+          }
+
+          return (
             <div
-              className="relative rounded-3xl overflow-hidden border-2 transition-all duration-500 group-hover:scale-110 group-hover:rotate-0 group-hover:z-50"
+              key={i}
+              ref={el => { photoRefs.current[i] = el; }}
+              className="absolute cursor-pointer pointer-events-auto group"
               style={{
-                borderColor: 'rgba(255, 182, 193, 0.5)',
-                boxShadow: '0 8px 32px rgba(255, 107, 129, 0.15)',
+                left,
+                top,
+                width: size,
+                zIndex: photo.zIndex,
+                display,
+                transform: `rotate(${photo.rotation}deg)`,
+                animation: `float ${photo.floatDuration}s ease-in-out infinite`,
+                animationDelay: `${photo.floatDelay}s`,
               }}
             >
-              <img
-                src={photo.src}
-                alt={`Her photo ${i + 1}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                style={{ aspectRatio: '3/4' }}
-                loading={i < 3 ? 'eager' : 'lazy'}
-              />
-              {/* Subtle glow overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-blush/20 to-transparent pointer-events-none" />
+              <div
+                className="relative rounded-3xl overflow-hidden border-2 transition-all duration-500 group-hover:scale-110 group-hover:rotate-0 group-hover:z-50"
+                style={{
+                  borderColor: 'rgba(255, 182, 193, 0.5)',
+                  boxShadow: '0 8px 32px rgba(255, 107, 129, 0.15)',
+                }}
+              >
+                <img
+                  src={photo.src}
+                  alt={`Her photo ${i + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  style={{ aspectRatio: '3/4' }}
+                  loading={i < 3 ? 'eager' : 'lazy'}
+                />
+                {/* Subtle glow overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-blush/20 to-transparent pointer-events-none" />
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Center content */}

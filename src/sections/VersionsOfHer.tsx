@@ -139,10 +139,10 @@ export default function VersionsOfHer() {
       <div className="max-w-[1200px] mx-auto px-4 md:px-6">
         {/* Section title */}
         <div ref={titleRef} className="text-center mb-12 md:mb-16">
-          <h2 className="font-display text-[36px] md:text-[48px] lg:text-[60px] font-medium text-textDark leading-tight">
+          <h2 className="font-display text-[28px] xs:text-[36px] md:text-[48px] lg:text-[60px] font-medium text-textDark leading-tight">
             The Many Versions of You
           </h2>
-          <p className="mt-3 font-script text-[28px] md:text-[36px] text-rosePink">
+          <p className="mt-3 font-script text-[24px] xs:text-[28px] md:text-[36px] text-rosePink">
             every side of you is art
           </p>
         </div>

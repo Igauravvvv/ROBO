@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -50,6 +50,15 @@ export default function EndingSection() {
   const text4Ref = useRef<HTMLDivElement>(null);
   const photoContainerRef = useRef<HTMLDivElement>(null);
   const finalFadeRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect screen size for responsive collage and orbit layout
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -99,13 +108,15 @@ export default function EndingSection() {
       // Photo montage orbit animation
       const photos = photoContainerRef.current?.children;
       if (photos) {
+        const isMobileDevice = window.innerWidth < 768;
+        const originY = isMobileDevice ? 110 : 250;
         Array.from(photos).forEach((photo, i) => {
           gsap.to(photo, {
             rotation: 360,
             duration: 30 + i * 5,
             ease: 'none',
             repeat: -1,
-            transformOrigin: '50% 250px',
+            transformOrigin: `50% ${originY}px`,
           });
         });
       }
@@ -134,22 +145,22 @@ export default function EndingSection() {
             key={`rose-${i}`}
             delay={i * 1.5}
             x={5 + i * 9}
-            size={24 + (i % 3) * 8}
+            size={isMobile ? 18 + (i % 3) * 4 : 24 + (i % 3) * 8}
             duration={12 + (i % 4) * 3}
           />
         ))}
 
         {/* Sparkles */}
-        {Array.from({ length: 25 }).map((_, i) => (
+        {Array.from({ length: isMobile ? 12 : 25 }).map((_, i) => (
           <svg
             key={`sparkle-${i}`}
             className="absolute animate-sparkle pointer-events-none"
             style={{
-              left: `${5 + (i * 4) % 90}%`,
-              top: `${5 + (i * 5) % 90}%`,
-              width: 8 + Math.random() * 8,
-              height: 8 + Math.random() * 8,
-              animationDelay: `${i * 0.3}s`,
+              left: `${5 + (i * 7) % 90}%`,
+              top: `${5 + (i * 8) % 90}%`,
+              width: isMobile ? 5 + Math.random() * 5 : 8 + Math.random() * 8,
+              height: isMobile ? 5 + Math.random() * 5 : 8 + Math.random() * 8,
+              animationDelay: `${i * 0.4}s`,
               animationDuration: `${2 + Math.random() * 2}s`,
             }}
             viewBox="0 0 24 24"
@@ -160,14 +171,14 @@ export default function EndingSection() {
         ))}
 
         {/* Floating hearts */}
-        {Array.from({ length: 18 }).map((_, i) => (
+        {Array.from({ length: isMobile ? 10 : 18 }).map((_, i) => (
           <svg
             key={`heart-${i}`}
             className="absolute animate-floatHeart pointer-events-none"
             style={{
-              left: `${5 + i * 5}%`,
-              width: 12 + Math.random() * 10,
-              height: 12 + Math.random() * 10,
+              left: `${5 + i * (isMobile ? 9 : 5)}%`,
+              width: isMobile ? 8 + Math.random() * 6 : 12 + Math.random() * 10,
+              height: isMobile ? 8 + Math.random() * 6 : 12 + Math.random() * 10,
               animationDuration: `${12 + (i % 5) * 3}s`,
               animationDelay: `${i * 0.8}s`,
             }}
@@ -179,12 +190,12 @@ export default function EndingSection() {
         ))}
 
         {/* Fine dust particles */}
-        {Array.from({ length: 50 }).map((_, i) => (
+        {Array.from({ length: isMobile ? 25 : 50 }).map((_, i) => (
           <FloatingParticle
             key={`dust-${i}`}
             delay={i * 0.4}
             x={Math.random() * 100}
-            size={2 + Math.random() * 2}
+            size={1.5 + Math.random() * 1.5}
             duration={35 + Math.random() * 25}
             color={i % 3 === 0 ? 'rgba(255,193,204,0.4)' : i % 3 === 1 ? 'rgba(255,255,255,0.5)' : 'rgba(255,182,193,0.3)'}
           />
@@ -212,26 +223,26 @@ export default function EndingSection() {
       {/* Main text sequence */}
       <div className="relative z-10 text-center px-4">
         <div ref={text1Ref} className="opacity-0">
-          <h2 className="font-display text-[36px] md:text-[48px] lg:text-[60px] text-textDark">
+          <h2 className="font-display text-[26px] xs:text-[32px] sm:text-[36px] md:text-[48px] lg:text-[60px] text-textDark leading-normal">
             In every universe,
           </h2>
         </div>
 
         <div ref={text2Ref} className="opacity-0 mt-2">
-          <h2 className="font-display text-[36px] md:text-[48px] lg:text-[60px] text-romanticRed">
+          <h2 className="font-display text-[26px] xs:text-[32px] sm:text-[36px] md:text-[48px] lg:text-[60px] text-romanticRed leading-normal">
             it would still be{' '}
             <span className="glow-text-pink">you</span>
           </h2>
         </div>
 
-        <div ref={text3Ref} className="opacity-0 mt-8">
-          <p className="font-script text-[32px] md:text-[40px] text-textLight">
+        <div ref={text3Ref} className="opacity-0 mt-6 md:mt-8">
+          <p className="font-script text-[22px] xs:text-[26px] sm:text-[32px] md:text-[40px] text-textLight">
             You are, and will always be,
           </p>
         </div>
 
         <div ref={text4Ref} className="opacity-0 mt-3">
-          <h1 className="font-display text-[10vw] md:text-[8vw] lg:text-[6vw] text-gradient-romantic leading-tight">
+          <h1 className="font-display text-[9vw] xs:text-[8vw] md:text-[8vw] lg:text-[6vw] text-gradient-romantic leading-tight">
             my favorite person{' '}
             <span className="inline-block animate-pulseHeart">❤️</span>
           </h1>
@@ -241,22 +252,23 @@ export default function EndingSection() {
       {/* Photo montage arc */}
       <div
         ref={photoContainerRef}
-        className="absolute bottom-[15%] left-1/2 -translate-x-1/2 z-10 pointer-events-none"
+        className="absolute bottom-[16%] left-1/2 -translate-x-1/2 z-10 pointer-events-none"
       >
         {floatingPhotos.map((photo, i) => {
           const angle = (i / (floatingPhotos.length - 1)) * 140 - 70; // Arc from -70 to +70 degrees
-          const radius = 200;
+          const radius = isMobile ? 80 : 200;
           const rad = (angle * Math.PI) / 180;
           const x = Math.sin(rad) * radius;
-          const y = Math.cos(rad) * 40;
+          const y = Math.cos(rad) * (isMobile ? 15 : 40);
+          const currentSize = isMobile ? photo.size * 0.55 : photo.size;
           return (
             <div
               key={i}
-              className="absolute rounded-2xl overflow-hidden border-2 animate-float"
+              className="absolute rounded-xl md:rounded-2xl overflow-hidden border-2 animate-float"
               style={{
-                width: photo.size,
-                height: photo.size * 1.3,
-                left: `calc(50% + ${x}px - ${photo.size / 2}px)`,
+                width: currentSize,
+                height: currentSize * 1.3,
+                left: `calc(50% + ${x}px - ${currentSize / 2}px)`,
                 top: `${y}px`,
                 borderColor: 'rgba(255, 182, 193, 0.5)',
                 boxShadow: '0 8px 32px rgba(255, 107, 129, 0.15)',
@@ -278,9 +290,9 @@ export default function EndingSection() {
       {/* Final fade text */}
       <div
         ref={finalFadeRef}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 opacity-0 text-center"
+        className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-10 opacity-0 text-center w-full"
       >
-        <p className="text-[14px] font-body text-textLight/60">
+        <p className="text-[12px] md:text-[14px] font-body text-textLight/60">
           thank you for being born
         </p>
       </div>

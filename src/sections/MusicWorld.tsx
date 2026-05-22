@@ -92,7 +92,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
   return (
     <div
       ref={cardRef}
-      className="glass-strong rounded-3xl p-8 md:p-10 relative group transition-all duration-500 hover:scale-[1.02]"
+      className="glass-strong rounded-3xl p-5 xs:p-8 md:p-10 relative group transition-all duration-500 hover:scale-[1.02]"
       style={{
         maxWidth: '500px',
         width: '100%',
@@ -115,7 +115,7 @@ function ArtistCard({ artist }: { artist: Artist }) {
       />
 
       {/* Artist name */}
-      <h3 className="font-display text-[36px] md:text-[48px] text-textDark text-center mb-6">
+      <h3 className="font-display text-[26px] xs:text-[32px] md:text-[48px] text-textDark text-center mb-6">
         {artist.name}
       </h3>
 
@@ -233,10 +233,10 @@ export default function MusicWorld() {
       <div className="max-w-[1000px] mx-auto px-4 md:px-6 relative z-10">
         {/* Section title */}
         <div ref={titleRef} className="text-center mb-12 md:mb-16">
-          <h2 className="font-display text-[36px] md:text-[48px] lg:text-[60px] font-medium text-textDark leading-tight">
+          <h2 className="font-display text-[28px] xs:text-[36px] md:text-[48px] lg:text-[60px] font-medium text-textDark leading-tight">
             Your Music, Your World
           </h2>
-          <p className="mt-3 font-script text-[28px] md:text-[36px] text-rosePink">
+          <p className="mt-3 font-script text-[24px] xs:text-[28px] md:text-[36px] text-rosePink">
             songs that sound like us
           </p>
         </div>

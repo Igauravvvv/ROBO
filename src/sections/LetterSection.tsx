@@ -191,10 +191,10 @@ export default function LetterSection() {
       <div className="max-w-[700px] mx-auto px-4 md:px-6 relative z-10">
         {/* Section title */}
         <div ref={titleRef} className="text-center mb-10 md:mb-14">
-          <h2 className="font-display text-[36px] md:text-[48px] lg:text-[60px] font-medium text-textDark leading-tight">
+          <h2 className="font-display text-[28px] xs:text-[36px] md:text-[48px] lg:text-[60px] font-medium text-textDark leading-tight">
             A Letter to You
           </h2>
-          <p className="mt-3 font-script text-[28px] md:text-[36px] text-rosePink">
+          <p className="mt-3 font-script text-[24px] xs:text-[28px] md:text-[36px] text-rosePink">
             words from my heart
           </p>
         </div>
@@ -202,10 +202,10 @@ export default function LetterSection() {
         {/* Letter container */}
         <div
           ref={letterRef}
-          className="relative rounded-3xl p-8 md:p-12 lg:p-14"
+          className="relative rounded-3xl p-5 xs:p-8 md:p-12 lg:p-14"
           style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,250,251,0.98) 100%)',
-            boxShadow: '0 0 40px rgba(255, 193, 204, 0.3), 0 8px 32px rgba(255, 107, 129, 0.1)',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,250,253,0.98) 100%)',
+            boxShadow: '0 0 40px rgba(255, 133, 164, 0.3), 0 8px 32px rgba(255, 107, 143, 0.1)',
           }}
         >
           {/* Gradient border effect */}
@@ -238,7 +238,7 @@ export default function LetterSection() {
           {/* Letter content */}
           <div className="relative">
             {/* Salutation */}
-            <p className="font-script text-[28px] md:text-[32px] text-romanticRed mb-6">
+            <p className="font-script text-[24px] xs:text-[28px] md:text-[32px] text-romanticRed mb-6">
               My Dearest Love,
             </p>
 
@@ -247,7 +247,7 @@ export default function LetterSection() {
               {letterParagraphs.map((_para, i) => (
                 <p
                   key={i}
-                  className="text-[16px] md:text-[18px] lg:text-[20px] font-body text-textDark leading-[1.8] min-h-[2em]"
+                  className="text-[14px] xs:text-[16px] md:text-[18px] lg:text-[20px] font-body text-textDark leading-[1.8] min-h-[2em]"
                 >
                   {hasStarted ? displayedParagraphs[i] || '' : ''}
                   {isTyping && i === displayedParagraphs.findIndex((p, idx) => p.length < letterParagraphs[idx].text.length && (idx === 0 || displayedParagraphs[idx - 1].length === letterParagraphs[idx - 1].text.length)) && (

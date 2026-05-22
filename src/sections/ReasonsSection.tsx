@@ -199,15 +199,15 @@ const reasons: ReasonCard[] = [
 ];
 
 const sizeClasses = {
-  sm: 'max-w-[280px]',
-  md: 'max-w-[340px]',
-  lg: 'max-w-[400px]',
+  sm: 'w-full max-w-[280px] xs:max-w-[300px]',
+  md: 'w-full max-w-[300px] xs:max-w-[320px] sm:max-w-[340px]',
+  lg: 'w-full max-w-[320px] xs:max-w-[350px] sm:max-w-[400px]',
 };
 
 const sizePadding = {
   sm: 'p-5',
-  md: 'p-6',
-  lg: 'p-7',
+  md: 'p-5 sm:p-6',
+  lg: 'p-5 sm:p-7',
 };
 
 function FlipCard({ card }: { card: ReasonCard }) {
